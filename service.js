@@ -3,6 +3,7 @@ var req = require('request');
 var Promise = require('bluebird');
 var request = Promise.promisify(req);
 var pageSize = 1000;
+var BASE_URL='http://0.0.0:5000';
 
 var ServiceHelper = function (queue) {
     var self = this;
@@ -17,7 +18,7 @@ var ServiceHelper = function (queue) {
     };
     var getChannelSummary = function () {
         var requestOption = {
-            url: 'http://0.0.0.0:5000/api/v1/channel/' + pageSize
+            url: BASE_URL+ '/api/v1/channel/' + pageSize
         };
         return request(requestOption).then(parserPages)
     };
@@ -37,7 +38,7 @@ var ServiceHelper = function (queue) {
     };
     var getItemsOfPageAndPush = function (page) {
         var requestOption = {
-            url: 'http://0.0.0.0:5000/api/v1/channels/' + page
+            url: BASE_URL+ '/api/v1/channels/' + page
         };
         return request(requestOption).then(parserChannels).then(pushChannelsToQueue);
     };
