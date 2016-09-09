@@ -1,11 +1,15 @@
 'use strict';
 var req = require('request');
 var Promise = require('bluebird');
+var util = require('util');
 var request = Promise.promisify(req);
+var logger = require('./logger');
 var pageSize = 100;
 var BASE_URL='http://0.0.0:5000';
 
+
 var ServiceHelper = function (queue) {
+    var log = logger().getLogger('ServiceHelper');
     var self = this;
     var parserPages = function (data) {
         if (data == null || data == undefined) return;
@@ -29,6 +33,8 @@ var ServiceHelper = function (queue) {
             var msg = JSON.stringify(item);
             queue.sendToQueue('fetcher', new Buffer(msg));
             console.log(" [x] Sent %s", msg);
+            log.info(util.format('[x] Sent %s', msg));
+
         }
     };
     var parserChannels = function (data) {
@@ -44,7 +50,6 @@ var ServiceHelper = function (queue) {
 
     var getChannelThenPushToQueue = function (pages) {
         return Promise.map(pages, function (page) {
-            console.log('page' + page);
             return getItemsOfPageAndPush(page);
         });
     };

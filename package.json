@@ -5,6 +5,7 @@
   "dependencies": {
     "amqplib": "^0.3.2",
     "bluebird": "^3.4.6",
+    "log4js": "^0.6.38",
     "request": "^2.74.0"
   }
 }
